@@ -1,7 +1,11 @@
 package models
 
 import (
-	"databse/sql"
+	"database/sql"
+
+	"github.com/cloudflare/cfssl/log"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type ShortnerData struct {
@@ -11,6 +15,14 @@ type ShortnerData struct {
 
 type ShortnerDataModel struct {
 	DB *sql.DB
+}
+
+func DBConnection() {
+
+	db, err := gorm.Open(postgres.Open(), postgres.Config{})
+	if err != nil {
+		log.Errorf(err.Error())
+	}
 }
 
 func (m *ShortnerDataModel) Latest() ([]*ShortnerData, error) {
